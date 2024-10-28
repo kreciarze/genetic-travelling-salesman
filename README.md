@@ -2,12 +2,22 @@
 
 Genetic algorithm for solving Travelling Salesman Problem.
 
-Build docker image:
-```
-docker compose build genetic-travelling-salesman
-```
+1. Build docker image:
+    ```
+    docker compose build genetic-travelling-salesman
+    ```
 
-Run docker container:
-```
-make dc_bash
-```
+2. Run docker container:
+    ```
+    make dc_bash
+    ```
+
+3. Run tests:
+    ```
+    make test
+   ```
+
+4. Run genetic algorithm:
+    ```
+    python src/driver.py
+    ```
