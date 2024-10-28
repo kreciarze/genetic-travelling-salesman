@@ -4,7 +4,7 @@ from travel_graph import TravelGraph
 
 
 def main() -> None:
-    cities = ["City 1", "City 2", "City 3", "City 4", "City 5"]
+    cities = [f"City {i}" for i in range(0, 100)]
     distance_matrix = generate_random_distance_matrix(cities=cities)
     print(f"Distance Matrix: {distance_matrix}")
 
