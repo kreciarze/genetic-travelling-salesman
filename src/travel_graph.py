@@ -21,7 +21,7 @@ class TravelGraph:
             keep_parents=1,
             crossover_type="single_point",
             mutation_type="random",
-            mutation_percent_genes=10,
+            mutation_num_genes=max(len(self.cities) * 0.1, 1),
             gene_space=[i for i in range(len(self.cities))],
             allow_duplicate_genes=False,
         )

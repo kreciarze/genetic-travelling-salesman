@@ -93,4 +93,3 @@ addopts = "--strict-markers --cov=. --cov-fail-under=90.0 --cov-config=.coverage
 pythonpath = [
     ".",
 ]
-asyncio_mode = "auto"
