@@ -11,7 +11,7 @@ numpy = "^2.1.2"
 pygad = "^3.3.1"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.3.0"
+black = "^24.10.0"
 fawltydeps = "^0.13.3"
 flake8 = "^6.0.0"
 flake8-pyproject = "^1.2.3"
@@ -30,6 +30,7 @@ line-length = 120
 [tool.coverage.run]
 branch = true
 omit = [
+    "driver.py",
     "*test*",
     "*__init__*",
 ]

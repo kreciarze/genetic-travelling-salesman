@@ -1,32 +1,34 @@
-from pygad import GA
+from random import random
 
 from travel_graph import TravelGraph
 
 
 def main() -> None:
-    city_names = ["City 1", "City 2", "City 3", "City 4", "City 5"]
-    travel_graph = TravelGraph(city_names=city_names)
+    cities = ["City 1", "City 2", "City 3", "City 4", "City 5"]
+    distance_matrix = generate_random_distance_matrix(cities=cities)
+    print(f"Distance Matrix: {distance_matrix}")
 
-    ga_instance = GA(
-        num_generations=50,
-        num_parents_mating=2,
-        fitness_func=travel_graph.fitness_function,
-        sol_per_pop=50,
-        num_genes=len(city_names),
-        init_range_low=0,
-        init_range_high=len(city_names) - 1,
-        gene_type=int,
-        parent_selection_type="sss",
-        keep_parents=1,
-        crossover_type="single_point",
-        mutation_type="random",
-        mutation_percent_genes=10,
-    )
-    ga_instance.run()
+    travel_graph = TravelGraph(city_names=cities, distance_matrix=distance_matrix)
+    solution, distance = travel_graph.find_shortest_path()
+    print(f"Best solution: {" -> ".join(solution)}")
+    print(f"Distance of the best solution = {distance}")
 
-    solution, solution_fitness, solution_idx = ga_instance.best_solution()
-    print("Parameters of the best solution : {solution}".format(solution=solution))
-    print("Fitness value of the best solution = {solution_fitness}".format(solution_fitness=solution_fitness))
+
+def generate_random_distance_matrix(cities: list[str]) -> list[list[float]]:
+    distance_matrix = []
+
+    for city_1 in cities:
+        city_1_distances = []
+
+        for city_2 in cities:
+            if city_1 == city_2:
+                city_1_distances.append(0.0)
+            else:
+                city_1_distances.append(random())
+
+        distance_matrix.append(city_1_distances)
+
+    return distance_matrix
 
 
 if __name__ == "__main__":
