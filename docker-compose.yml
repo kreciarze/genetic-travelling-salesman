@@ -1,0 +1,6 @@
+services:
+  genetic-travelling-salesman:
+    build:
+      context: .
+    volumes:
+      - ./:/code
