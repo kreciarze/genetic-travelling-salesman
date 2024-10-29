@@ -12,10 +12,9 @@ all_ff: check_ff test ### Run all checks and tests, but fail on first that retur
 
 # Separate command versions for github actions
 ci/test:
-	PYTHONPATH=./src pytest src/tests/ --durations=10 --junit-xml=test-results.xml
+	PYTHONPATH=./src pytest tests/ --durations=10 --junit-xml=test-results.xml
 
-ci/integration-test:
-	PYTHONPATH=./src pytest src/integration_tests/ --durations=10 --junit-xml=integration-test-results.xml --no-cov
+ci/check: ci/check/lint/black ci/check/lint/deps ci/check/lint/flake8 ci/check/lint/isort ci/check/mypy
 
 ci/check/lint/black ci/lint/black:
 	black src/ --diff --check --quiet
