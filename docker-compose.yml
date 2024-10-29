@@ -3,4 +3,9 @@ services:
     build:
       context: .
     volumes:
-      - ./:/code
+      - ./src:/code/src
+      - ./tests:/code/tests
+      - ./Makefile:/code/Makefile
+      - ./pyproject.toml:/code/pyproject.toml
+      - ./poetry.lock:/code/poetry.lock
+      - ./README.md:/code/README.md

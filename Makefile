@@ -3,7 +3,7 @@ CONTAINER_NAME := genetic-travelling-salesman
 
 # Docker-related and running stuff inside docker:
 dc/% dc_%:  ### Run any action inside docker (replace % with any action from below)
-	docker-compose run --rm ${CONTAINER_NAME} make $*
+	docker compose run --rm ${CONTAINER_NAME} make $*
 
 # Run all
 all: check test ### Run all checks and tests (lints, mypy, tests...)

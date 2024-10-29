@@ -1,7 +1,5 @@
 FROM python:3.13-slim-bullseye
 
-MAINTAINER Piotr Karaś <pkaras@student.agh.edu.pl>
-
 RUN apt-get update \
     && apt-get install -y \
     make \
