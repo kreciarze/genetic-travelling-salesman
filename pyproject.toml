@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "genetic-travelling-salesman"
-version = "0.0.0"
+version = "0.1.0"
 description = "Genetic algorithm for solving Travelling Salesman Problem."
 authors = ["Piotr Karaś <pkaras@student.agh.edu.pl>"]
 readme = "README.md"
@@ -21,19 +21,15 @@ pytest = "^8.2.1"
 pytest-cov = "^4.1.0"
 
 [build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
-build-backend = "poetry_dynamic_versioning.backend"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 120
 
 [tool.coverage.run]
 branch = true
-omit = [
-    "driver.py",
-    "*test*",
-    "*__init__*",
-]
+omit = ["*test*"]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -67,9 +63,6 @@ max-line-length = 120
 
 [tool.isort]
 profile = "black"
-# isort configuration:
-# https://github.com/timothycrosley/isort/wiki/isort-Settings
-# ignored bc: https://github.com/PyCQA/isort/issues/1640 Workaround run isort with params isort --line-length=80
 line_length = 120
 order_by_type = false
 
@@ -82,14 +75,7 @@ no_implicit_optional = true
 check_untyped_defs = true
 strict_equality = true
 
-[tool.poetry-dynamic-versioning]
-enable = true
-bump = true
-
-# pytest settings
 [tool.pytest.ini_options]
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
 addopts = "--strict-markers --cov=. --cov-fail-under=90.0 --cov-config=.coveragerc"
-pythonpath = [
-    ".",
-]
+pythonpath = ["."]

@@ -76,6 +76,13 @@ test:  ### Run all unittests
 bash:  ### Open bash console (useful when prefixed with dc/, as it opens bash inside docker)
 	bash
 
+copier_update:  ### Run copier to update project from template
+	@TEMPLATES=$$(ls -a .copier | grep -i ".copier-answers" | sed -e 's/\.copier-answers\.//' -e 's/\.yml//'); \
+	echo "Available templates:"; \
+	echo "$$TEMPLATES" | sed 's/^/* /'; \
+	read -p "Enter template name: " TEMPLATE; \
+	copier update --answers-file .copier/.copier-answers.$$TEMPLATE.yml --skip-answered
+
 ### Help
 help: ## Show this help
 	@sed -Ene 's/^([^ 	]+)( [^ 	]+)*:.*##/\1:\t/p' $(MAKEFILE_LIST) | column -t -s $$'\t'
