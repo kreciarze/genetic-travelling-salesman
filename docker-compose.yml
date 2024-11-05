@@ -3,6 +3,7 @@ services:
     build:
       context: .
     volumes:
+      - ./data:/code/data
       - ./src:/code/src
       - ./tests:/code/tests
       - ./Makefile:/code/Makefile

@@ -1,34 +1,20 @@
-from random import random
+from parser.tsp_parser import parse_tsp_file
 
 from travel_graph import TravelGraph
 
 
 def main() -> None:
-    cities = [f"City {i}" for i in range(0, 100)]
-    distance_matrix = generate_random_distance_matrix(cities=cities)
-    print(f"Distance Matrix: {distance_matrix}")
+    tsp_file_path = "data/xqf131/xqf131.tsp"
+    tsp_file = parse_tsp_file(file_path=tsp_file_path)
 
-    travel_graph = TravelGraph(city_names=cities, distance_matrix=distance_matrix)
+    travel_graph = TravelGraph(nodes=tsp_file.nodes)
     solution, distance = travel_graph.find_shortest_path()
-    print(f"Best solution: {" -> ".join(solution)}")
-    print(f"Distance of the best solution = {distance}")
-
-
-def generate_random_distance_matrix(cities: list[str]) -> list[list[float]]:
-    distance_matrix = []
-
-    for city_1 in cities:
-        city_1_distances = []
-
-        for city_2 in cities:
-            if city_1 == city_2:
-                city_1_distances.append(0.0)
-            else:
-                city_1_distances.append(random())
-
-        distance_matrix.append(city_1_distances)
-
-    return distance_matrix
+    print(f"TSP: {tsp_file.name}")
+    print(f"cities: {tsp_file.dimension}")
+    print(f"edge weight type: {tsp_file.edge_weight_type}")
+    print()
+    print(f"best solution: {" -> ".join(solution)}")
+    print(f"best distance = {distance}")
 
 
 if __name__ == "__main__":

@@ -1,17 +1,21 @@
+from parser.tour_parser import parse_tour_file
+from parser.tsp_parser import parse_tsp_file
+
 from numpy.ma.testutils import assert_array_equal
 
 from travel_graph import TravelGraph
 
 
 def test_solution() -> None:
-    cities = ["City 1", "City 2", "City 3"]
-    distance_matrix = [
-        [0.0, 1.0, 9.0],
-        [9.0, 0.0, 1.0],
-        [1.0, 9.0, 0.0],
-    ]
-    travel_graph = TravelGraph(city_names=cities, distance_matrix=distance_matrix)
+    tsp_file_path = "data/xqf131/xqf131.tsp"
+    tour_file_path = "data/xqf131/xqf131.tour"
+    tsp_file = parse_tsp_file(file_path=tsp_file_path)
+    tour_file = parse_tour_file(file_path=tour_file_path)
+    assert tsp_file.name == tour_file.name
+    assert tsp_file.dimension == tour_file.dimension
+
+    travel_graph = TravelGraph(nodes=tsp_file.nodes)
     solution, distance = travel_graph.find_shortest_path()
 
-    assert distance == 3.0
-    assert_array_equal(solution, ["City 1", "City 2", "City 3"])
+    assert distance == 564.0
+    assert_array_equal(solution, tour_file.tour)
