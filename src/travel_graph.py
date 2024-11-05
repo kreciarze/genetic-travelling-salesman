@@ -21,10 +21,10 @@ class TravelGraph:
 
     def find_shortest_path(self) -> tuple[list[int], float]:
         ga_instance = GA(
-            num_generations=50,
-            num_parents_mating=2,
+            num_generations=100,
+            num_parents_mating=4,
             fitness_func=self.fitness_function,
-            sol_per_pop=50,
+            sol_per_pop=300,
             num_genes=len(self.nodes),
             init_range_low=0,
             init_range_high=len(self.nodes) - 1,

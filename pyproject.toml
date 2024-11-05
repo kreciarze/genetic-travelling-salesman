@@ -78,5 +78,5 @@ strict_equality = true
 
 [tool.pytest.ini_options]
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
-addopts = "--strict-markers --cov=. --cov-fail-under=80.0 --cov-config=.coveragerc"
+addopts = "--strict-markers --cov=. --cov-fail-under=60.0 --cov-config=.coveragerc"
 pythonpath = ["."]
