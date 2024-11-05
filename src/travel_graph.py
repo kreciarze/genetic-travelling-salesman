@@ -19,7 +19,7 @@ class TravelGraph:
         self.nodes = nodes
         self.distance_function = distance_function
 
-    def find_shortest_path(self) -> tuple[list[str], float]:
+    def find_shortest_path(self) -> tuple[list[int], float]:
         ga_instance = GA(
             num_generations=50,
             num_parents_mating=2,

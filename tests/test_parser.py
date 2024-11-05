@@ -18,4 +18,4 @@ def test_tour_parser() -> None:
 
     assert tour_file.name == "xqf131"
     assert tour_file.dimension == 131
-    assert len(tour_file.tour) == 131
+    assert tour_file.tour.shape == (131,)

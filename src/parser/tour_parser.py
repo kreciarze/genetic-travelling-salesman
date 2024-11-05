@@ -2,12 +2,14 @@ from dataclasses import dataclass
 from parser.parser import parse_headers
 from typing import TextIO
 
+import numpy as np
+
 
 @dataclass(frozen=True)
 class TourFile:
     name: str
     dimension: int
-    tour: list[int]
+    tour: np.ndarray
 
 
 def parse_tour_file(file_path: str) -> TourFile:
@@ -18,7 +20,7 @@ def parse_tour_file(file_path: str) -> TourFile:
     name = headers.get("NAME", "unknown")
     dimension = int(headers.get("DIMENSION", 0))
 
-    return TourFile(name=name, dimension=dimension, tour=tour)
+    return TourFile(name=name, dimension=dimension, tour=np.array(tour))
 
 
 def parse_tour(file: TextIO) -> list[int]:
