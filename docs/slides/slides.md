@@ -1,14 +1,22 @@
-# Temat projektu
+# Przegląd projektu
 
-**Rozwiązanie problemu komiwojażera z wykorzystaniem algorytmu genetycznego**
+**Temat:** Rozwiązanie problemu komiwojażera z wykorzystaniem algorytmu genetycznego
+
+**Cele:** 
+
+- Opracowanie bliskiego optimum rozwiązania problemu komiwojażera
+- Implementacja algorytmu w Pythonie przy użyciu PyGAD i wizualizacja wyników
+- Ocena i walidacja rozwiązania, porównanie z innymi metodami optymalizacji
+
+**Stos technologiczny:** Python, PyGAD
 
 # Programowanie i algorytmy genetyczne 
 
 ## Programowanie genetyczne
 
-Programowanie generyczne to podejście programistyczne, które umożliwia tworzenie funkcji, klas lub struktur danych pracujących na dowolnych typach danych, bez konieczności określania tych typów na etapie implementacji. Dzięki temu kod staje się bardziej uniwersalny i może być wielokrotnie używany w różnych kontekstach, co prowadzi do oszczędności czasu i zwiększenia jego czytelności. Przykładem programowania generycznego są tzw. szablony (ang. templates) w C++ oraz typy generyczne w językach takich jak Java czy C#.
+### Programowanie genetyczne, GP (ang. *genetic programming*)
 
-W przypadku programowania generycznego kompilator lub interpreter dokonuje dedukcji typu w czasie kompilacji (C++, Rust) lub wykonania (Python z typami ogólnymi). Przykładowo, jeśli stworzymy funkcję generyczną do sortowania listy, to będziemy mogli jej użyć zarówno do sortowania listy liczb, jak i obiektów innego typu, pod warunkiem że obsługują one operacje porównania. Dzięki temu kod jest bardziej elastyczny i łatwiejszy w utrzymaniu, ponieważ jedna implementacja może działać z różnymi typami danych.
+Zautomatyzowana metoda mająca na celu tworzenie programów komputerowych w oparciu o ogólną definicję problemu. Innymi słowy programowanie genetyczne pozwala, w oparciu o wysokopoziomową definicję mówiącą co ma być zrobione, automatycznie stworzyć program, który owo zagadnienie rozwiąże. 
 
 ## Algorytmy genetyczne
 
@@ -39,7 +47,9 @@ Algorytmy genetyczne są szeroko stosowane w różnych dziedzinach, takich jak o
 
 # Problem komiwojażera
 
-Problem komiwojażera (ang. Travelling Salesman Problem, TSP) to klasyczny problem optymalizacyjny, który polega na znalezieniu najkrótszej możliwej trasy, jaką musi pokonać komiwojażer (sprzedawca), aby odwiedzić każde z zadanych miast dokładnie raz i wrócić do punktu początkowego.
+### Problem komiwojażera (ang. Travelling Salesman Problem, TSP) 
+
+Klasyczny problem optymalizacyjny, który polega na znalezieniu najkrótszej możliwej trasy, jaką musi pokonać komiwojażer (sprzedawca), aby odwiedzić każde z zadanych miast dokładnie raz i wrócić do punktu początkowego.
 
 Formalnie, mając dany zbiór miast oraz odległości między każdą parą miast, należy wyznaczyć najkrótszy cykl Hamiltona w grafie, który reprezentuje połączenia między miastami. Przykładowe rozwiązanie prezentuje rysunek \ref{fig:komi-sample}. Problem komiwojażera jest zaliczany do klasy problemów NP-trudnych, co oznacza, że dla dużych zbiorów miast jego dokładne rozwiązanie staje się bardzo czasochłonne.
 
@@ -47,6 +57,8 @@ Formalnie, mając dany zbiór miast oraz odległości między każdą parą mias
 
 ::: columns
 :::: {.column width=60%}
+
+**Zastosowanie**
 
 Problem ten znajduje zastosowanie m.in. w logistyce, planowaniu tras transportowych i optymalizacji procesów produkcyjnych. Do jego rozwiązywania stosuje się różne podejścia, w tym algorytmy dokładne, przybliżone oraz heurystyczne, takie jak algorytmy genetyczne czy symulowane wyżarzanie.
 

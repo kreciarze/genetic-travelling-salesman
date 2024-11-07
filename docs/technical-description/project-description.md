@@ -1,11 +1,31 @@
-# Opis Techniczny Projektu: Rozwiązanie problemu komiwojażera z wykorzystaniem algorytmu genetycznego
+---
+title: Rozwiązanie problemu komiwojażera z wykorzystaniem algorytmu genetycznego
+subtitle: Opis Techniczny Projektu
+author: 
+- Tomasz Kawiak
+- Piotr Karaś
+- Mateusz Mazur
+links-as-notes: true
+header-includes:
+  - \usepackage[polish]{babel}
+  # - \usepackage[utf8]{inputenc}
+---
 
-## 1. Cel Projektu
+# Przegląd projektu
 
-Projekt ma na celu znalezienie jak najkrótszej ścieżki łączącej wszystkie podane miasta przy pomocy algorytmu genetycznego.\
-Kod jest implementacją algorytmu w Pythonie przy użyciu biblioteki `pygad`.
+**Temat:** Rozwiązanie problemu komiwojażera z wykorzystaniem algorytmu genetycznego
 
-## 2. Struktura Kodu
+**Cele:** 
+
+- Opracowanie bliskiego optimum rozwiązania problemu komiwojażera
+- Implementacja algorytmu w Pythonie przy użyciu PyGAD i wizualizacja wyników
+- Ocena i walidacja rozwiązania, porównanie z innymi metodami optymalizacji
+
+**Stos technologiczny:** Python, PyGAD
+
+# Opis Techniczny
+
+## Struktura Kodu
 
 Kod projektu składa się z następujących głównych elementów:
 
@@ -17,14 +37,17 @@ Kod projektu składa się z następujących głównych elementów:
   - `generate_random_distance_matrix` generuje macierz odległości
   - `main` obsługuje główną logikę wywoływania algorytmu.
 
-## 3. Szczegóły Techniczne i Algorytmiczne
+## Szczegóły Techniczne i Algorytmiczne
 
-### 3.1. Reprezentacja Danych
+### Reprezentacja Danych
+
 - **Lista Miast (`nodes`)**: 
   - Zawiera listę par x i y, które symbolizują miasta odwiedzane w ramach ścieżki podróży.
 
-### 3.2. Algorytm Genetyczny
+### Algorytm Genetyczny
+
 Parametry mogą ulec zmianie w czasie rozwoju projektu, w zależności od optymalizacji i testów.
+
 - **Inicjalizacja**: 
   - Tworzona jest populacja rozwiązań reprezentujących różne ścieżki między miastami.
 - **Funkcja Dopasowania (`fitness_function`)**:
@@ -36,7 +59,8 @@ Parametry mogą ulec zmianie w czasie rozwoju projektu, w zależności od optyma
 - **Mutacja**: `mutation_type="random"` 
   - Modyfikuje losowo wybrane geny w populacji potomków, co zapobiega wpadaniu algorytmu w lokalne minima.
 
-## 4. Parametry Algorytmu i Optymalizacja
+## Parametry Algorytmu i Optymalizacja
+
 - **Liczba Generacji (`num_generations`)**: 
   - Określa maksymalną liczbę iteracji, przez które przechodzi algorytm.
 - **Wielkość Populacji (`sol_per_pop`)**: 
@@ -44,14 +68,16 @@ Parametry mogą ulec zmianie w czasie rozwoju projektu, w zależności od optyma
 - **Przestrzeń Genów (`gene_space`)**:
   - Zapewnia, że geny przyjmują wartości tylko w zakresie dostępnych indeksów miast, bez powtórzeń w ścieżce.
 
-## 5. Wynik i Analiza Rozwiązania
+## Wynik i Analiza Rozwiązania
+
 Algorytm kończy swoje działanie, zwracając:
+
 - **Najlepszą Ścieżkę**: 
   - Lista indeksów podanych miast.
 - **Odległość Najlepszej Ścieżki**: 
   - Całkowita długość tej trasy.
 
-## 6. Przykładowe Uruchomienie
+## Przykładowe Uruchomienie
 
 Po uruchomieniu programu, wywołana zostaje funkcja `main`, która:
 - Odczytuje miasta z pliku .tsp
