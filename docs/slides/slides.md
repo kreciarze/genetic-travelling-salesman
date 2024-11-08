@@ -8,7 +8,7 @@
 - Implementacja algorytmu w Pythonie przy użyciu PyGAD i wizualizacja wyników
 - Ocena i walidacja rozwiązania, porównanie z innymi metodami optymalizacji
 
-**Stos technologiczny:** Python, PyGAD
+**Stos technologiczny:** Python [@vanrossum2009python], PyGAD [@gad2023pygad]
 
 # Programowanie i algorytmy genetyczne 
 
@@ -17,6 +17,9 @@
 ### Programowanie genetyczne, GP (ang. *genetic programming*)
 
 Zautomatyzowana metoda mająca na celu tworzenie programów komputerowych w oparciu o ogólną definicję problemu. Innymi słowy programowanie genetyczne pozwala, w oparciu o wysokopoziomową definicję mówiącą co ma być zrobione, automatycznie stworzyć program, który owo zagadnienie rozwiąże. 
+
+\
+Informacje i wskazówki dotyczące programowania genetycznego zaczerpnęliśmy m.in. z [@rutkowski2012metody], [@geeksforgeeks2023genetic] oraz [@analytixlabs2023complete].
 
 ## Algorytmy genetyczne
 
@@ -74,9 +77,3 @@ Problem ten znajduje zastosowanie m.in. w logistyce, planowaniu tras transportow
 # Dziękujemy za uwagę
 
 # Bibliografia
-
-Leszek Rutkowski. Metody i techniki sztucznej inteligencji. PWN 2012
-<!-- 
-https://www.geeksforgeeks.org/genetic-algorithms/
-
-[https://medium.com/@byanalytixlabs/a-complete-guide-to-genetic-algorithm-advantages-limitations-more-738e87427dbb](A Complete Guide to Genetic Algorithm — Advantages, Limitations & More) -->
