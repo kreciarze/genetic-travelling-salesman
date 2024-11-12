@@ -24,11 +24,10 @@ def plot_nodes_to_file(
     aspect_ratio = width / height
 
     plt.figure(figsize=(8 * aspect_ratio, 8))
-    plt.scatter(x_coords, y_coords, s=1)
+    plt.scatter(x_coords, y_coords, s=6)
 
     if order is not None:
-        order = order - 1
-        plt.plot(x_coords[order], y_coords[order], linewidth=0.5)
+        plt.plot(x_coords[order], y_coords[order], linewidth=1)
 
     plt.title(title)
     plt.xlabel("X Coordinate")
@@ -37,6 +36,6 @@ def plot_nodes_to_file(
     plt.xlim(x_min, x_max)
     plt.ylim(y_min, y_max)
 
-    plt.tight_layout(pad=0)
+    plt.tight_layout(pad=1)
     plt.savefig(file_path, format="png", dpi=100)
     plt.close()

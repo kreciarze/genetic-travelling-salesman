@@ -1,0 +1,12 @@
+NAME: easy
+TYPE: TOUR
+DIMENSION: 6
+TOUR_SECTION
+1
+2
+3
+4
+5
+6
+-1
+EOF

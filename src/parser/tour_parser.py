@@ -20,7 +20,8 @@ def parse_tour_file(file_path: str) -> TourFile:
     name = headers.get("NAME", "unknown")
     dimension = int(headers.get("DIMENSION", 0))
 
-    return TourFile(name=name, dimension=dimension, tour=np.array(tour))
+    np_tour = np.array(tour) - 1
+    return TourFile(name=name, dimension=dimension, tour=np_tour)
 
 
 def parse_tour(file: TextIO) -> list[int]:
