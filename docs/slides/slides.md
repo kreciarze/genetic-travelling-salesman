@@ -144,7 +144,7 @@ Tabela \ref{tab:results}: Porównanie wyników \label{tab:results}
 | xqf131 (131)          | Alg. Zachłanny   | *          | *                     |
 | xqf131 (131)          | Alg. Genetyczny  | 1475.39    | 1.7319                |
 
-\* algorytm nie zwrócił wyniku w ciągu 70 minut
+\* algorytm nie zwrócił wyniku w ciągu 10 godzin
 
 ## Wnioski
 
