@@ -2,6 +2,7 @@ title: |
   Rozwiązanie problemu komiwojażera \
   z wykorzystaniem algorytmu genetycznego
 author: Piotr Karaś, Tomasz Kawiak, Mateusz Mazur
+date: \today
 header-includes:
     - \usepackage[polish]{babel} # sudo apt install texlive-lang-polish
 link-citations: true
