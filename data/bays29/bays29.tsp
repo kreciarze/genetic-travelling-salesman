@@ -1,7 +1,6 @@
 NAME: bays29
 TYPE: TSP
 COMMENT: 29 cities in Bavaria, street distances (Groetschel,Juenger,Reinelt)
-COMMENT: Tour length 2020
 DIMENSION: 29
 EDGE_WEIGHT_TYPE: EXPLICIT
 EDGE_WEIGHT_FORMAT: FULL_MATRIX 

@@ -1,5 +1,6 @@
 NAME : eil101.opt.tour
 COMMENT : Optimum tour for eil101.tsp (Length 629)
+COMMENT: Tour length 629
 TYPE : TOUR
 DIMENSION : 101
 TOUR_SECTION

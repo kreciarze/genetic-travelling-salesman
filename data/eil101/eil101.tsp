@@ -1,6 +1,5 @@
 NAME : eil101
 COMMENT : 101-city problem (Christofides/Eilon)
-COMMENT: Tour length 629
 TYPE : TSP
 DIMENSION : 101
 EDGE_WEIGHT_TYPE : EUC_2D

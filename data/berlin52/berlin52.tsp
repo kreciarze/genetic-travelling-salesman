@@ -1,7 +1,6 @@
 NAME: berlin52
 TYPE: TSP
 COMMENT: 52 locations in Berlin (Groetschel)
-COMMENT: Tour length 7542
 DIMENSION: 52
 EDGE_WEIGHT_TYPE: EUC_2D
 NODE_COORD_SECTION
