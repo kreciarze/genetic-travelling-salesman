@@ -26,3 +26,6 @@ def parse_weights_file(file_path: str, nodes) -> WeightsFile:
             nodes=new_nodes,
             weights_distance_function=weights_distance_function,
         )
+    else:
+        print("Weights file not found. Using Euclidean distance function.")
+        return None
