@@ -1,7 +1,7 @@
-NAME: easy
-COMMENT: Tour length 12.17
-TYPE: TOUR
-DIMENSION: 6
+NAME : easy
+COMMENT : Tour length 12.17
+TYPE : TOUR
+DIMENSION : 6
 TOUR_SECTION
 1
 2
