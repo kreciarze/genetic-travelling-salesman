@@ -27,7 +27,7 @@ def plot_nodes_to_file(
     plt.scatter(x_coords, y_coords, s=6)
 
     if order is not None:
-        plt.plot(x_coords[order], y_coords[order], linewidth=1)
+        plt.plot(np.append(x_coords[order], x_coords[order][0]), np.append(y_coords[order], y_coords[order][0]), linewidth=1)
 
     plt.title(title)
     plt.xlabel("X Coordinate")

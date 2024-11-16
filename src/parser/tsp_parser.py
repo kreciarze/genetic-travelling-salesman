@@ -35,12 +35,20 @@ def parse_tsp_file(file_path: str) -> TSPFile:
 
 def parse_nodes(file: TextIO) -> list[Node]:
     nodes = []
+    edge_weight_mode = False
     for line in file:
         line = line.strip()
+        if edge_weight_mode:
+            if "_SECTION" in line:
+                edge_weight_mode = not edge_weight_mode
+            continue
         if line == "EOF":
             break
         parts = line.split()
-        x, y = int(parts[1]), int(parts[2])
+        if len(parts) != 3:
+            edge_weight_mode = True
+            continue
+        x, y = float(parts[1]), float(parts[2])
         nodes.append((x, y))
 
     return nodes
