@@ -27,7 +27,8 @@ def plot_nodes_to_file(
     plt.scatter(x_coords, y_coords, s=6)
 
     if order is not None:
-        plt.plot(np.append(x_coords[order], x_coords[order][0]), np.append(y_coords[order], y_coords[order][0]), linewidth=1)
+        plt.plot(np.append(x_coords[order], x_coords[order][0]), np.append(
+            y_coords[order], y_coords[order][0]), linewidth=1)
 
     plt.title(title)
     plt.xlabel("X Coordinate")
@@ -36,6 +37,22 @@ def plot_nodes_to_file(
     plt.xlim(x_min, x_max)
     plt.ylim(y_min, y_max)
 
+    plt.tight_layout(pad=1)
+    plt.savefig(file_path, format="png", dpi=100)
+    plt.close()
+
+
+def plot_convergence_to_file(
+    convergence: np.ndarray,
+    file_path: str,
+    title: str = "Convergence",
+) -> None:
+    plt.figure(figsize=(8, 8))
+    plt.plot(convergence)
+    plt.title(title)
+    plt.xlabel("Generation")
+    plt.ylabel("Fitness")
+    plt.grid()
     plt.tight_layout(pad=1)
     plt.savefig(file_path, format="png", dpi=100)
     plt.close()

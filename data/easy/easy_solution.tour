@@ -1,0 +1,15 @@
+NAME : easy_solution.tour
+TYPE : TOUR
+DIMENSION : 7
+COMMENT : Tour length: 12.1701 [s]
+COMMENT : Time elapsed: 25355.76 [s]
+TOUR_SECTION
+0
+1
+2
+3
+4
+5
+0
+-1
+EOF
