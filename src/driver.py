@@ -11,17 +11,17 @@ def run_all_problems():
         run_genetic_experiment(             # Default values
             problem_name,                   
             travel_graph_class=TravelGraphClassic,
-            population_size=500,            # 500
-            generations=500,                # 500
+            population_size=1000,            # 500
+            generations=1000,                # 500
             elitism_factor=0.15,            # 0.15
             diversity_factor=0.15,          # 0.15
             linear_selection_factor=0.5,    # 0.5
-            crossover_factor=10/131,        # 10/131
+            crossover_factor=0.1,        # 10/131
             p_mutation=0.01,                # 0.01
             mutate_elite=True,              # True
             patience=50,                    # 50
             patience_factor=0.001,          # 0.001
-            verbose=1,                      # 2
+            verbose=2,                      # 2
         )
 
 def main():

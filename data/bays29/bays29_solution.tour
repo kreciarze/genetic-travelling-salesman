@@ -1,38 +1,38 @@
 NAME : bays29_solution.tour
 TYPE : TOUR
 DIMENSION : 30
-COMMENT : Tour length: 2489.0
-COMMENT : Time elapsed: 25.48 [s]
+COMMENT : Tour length: 2344.0
+COMMENT : Time elapsed: 40.67 [s]
 TOUR_SECTION
 0
 23
 15
-24
+26
+27
+4
+2
+28
+25
+8
+11
+5
+7
+22
 6
+24
 18
-3
 14
 10
 21
 13
 16
 17
+3
+12
 9
 19
-2
-28
-0
-7
-22
-26
-12
-20
 1
-25
-4
-8
-11
-5
-27
+20
+0
 -1
 EOF
