@@ -1,84 +1,175 @@
-from typing import Any, Callable
-
 import numpy as np
-from pygad import GA
 
-type DistanceFunction = Callable[[Any, Any], float]
-
-
-def euclidean_distance(node_1: np.ndarray, node_2: np.ndarray) -> float:
-    return float(np.linalg.norm(node_1 - node_2))
+from ga_utils.individual import Individual
+from ga_utils.crossover_functions import CrossoverFunction, crossover_genes_pmx
+from ga_utils.diversification_functions import DiversificationFunction, diversification_random
+from ga_utils.mutation_functions import MutationFunction, mutate_gene_per_city
+from ga_utils.selection_functions import SelectionFunction, selection_elitism
+from ga_utils.distance_functions import DistanceFunction, distance_euclidean
+from ga_utils.fintess_functions import FitnessFunction, fitness_classic
 
 
 class TravelGraph:
+
     def __init__(
         self,
         nodes: np.ndarray,
-        distance_function: DistanceFunction = euclidean_distance,
+        distance_function: DistanceFunction = distance_euclidean,
+        fitness_function: FitnessFunction = fitness_classic,
+        selection_function: SelectionFunction = selection_elitism,
+        diversification_function: DiversificationFunction = diversification_random,
+        crossover_genes_function: CrossoverFunction = crossover_genes_pmx,
+        mutate_gene_function: MutationFunction = mutate_gene_per_city,
+        
     ) -> None:
         self.nodes = nodes
+        self.V = len(nodes)
+        self.current_solution = None
+        self.current_fitness = float("inf")
+        self.convergence_array = []
+
         self.distance_function = distance_function
+        self.fitness_function = fitness_function
+        self.selection_function = selection_function
+        self.diversification_function = diversification_function
+        self.crossover_genes_function = crossover_genes_function
+        self.mutate_gene_function = mutate_gene_function
 
-    def find_shortest_path(self) -> tuple[list[int], float]:
-        ga_instance = GA(
-            num_generations=200,
-            num_parents_mating=20,
-            fitness_func=self.fitness_function,
-            initial_population=self.generate_biased_population(population_size=100),
-            num_genes=len(self.nodes),
-            init_range_low=0,
-            init_range_high=len(self.nodes) - 1,
-            gene_type=int,
-            parent_selection_type="tournament",
-            keep_parents=1,
-            keep_elitism=2,
-            K_tournament=5,
-            crossover_type="single_point",
-            crossover_probability=0.8,
-            mutation_type="random",
-            mutation_probability=0.2,
-            mutation_num_genes=max(round(len(self.nodes) * 0.1), 1),
-            gene_space=[i for i in range(len(self.nodes))],
-            allow_duplicate_genes=False,
-            stop_criteria=[
-                "saturate_10",
-            ],
-            random_seed=42,
-        )
-        ga_instance.run()
 
-        solution, solution_fitness, _ = ga_instance.best_solution()
-        distance = -solution_fitness
-        return solution, distance
-
-    def generate_biased_population(self, population_size: int, random_fraction: float = 0.2) -> list[np.ndarray]:
-        base_order = np.arange(len(self.nodes))
+    def find_shortest_path(
+        self,
+        population_size=1000,           # 1000
+        generations=500,                # 500
+        elitism_factor=0.15,            # 0.15
+        elitism_factor_change=None,     # None
+        diversity_factor=0.15,          # 0.15
+        diversity_factor_change=None,   # None
+        crossover_factor=0.1,           # 0.1
+        crossover_factor_change=None,   # None
+        p_mutation=0.01,                # 0.01
+        p_mutation_change=None,         # None
+        mutate_elite=True,              # True
+        patience=50,                    # 50
+        patience_factor=0.001,          # 0.001
+        verbose=2,                      # 2
+    ):
+        i_generation = 1
         population = []
 
-        num_random_individuals = int(population_size * random_fraction)
-        num_biased_individuals = population_size - num_random_individuals
+        # 1) Initialize the population
+        for i in range(population_size):
+            temp = Individual(self.V)
+            temp.fitness = self.fitness_function(
+                temp.gnome, self.nodes, self.distance_function)
+            population.append(temp)
 
-        for _ in range(num_biased_individuals):
-            individual = base_order.copy()
+        if verbose > 2:
+            print("\nInitial population:")
+            for i in range(population_size):
+                print("\t", population[i])
+            print()
 
-            num_swaps = np.random.randint(2, 6)
-            for _ in range(num_swaps):
-                i, j = np.random.choice(len(self.nodes), size=2, replace=False)
-                individual[i], individual[j] = individual[j], individual[i]
+        # 6) Evolution
+        while i_generation <= generations:
+            if verbose >= 1:
+                params_dict = {
+                    "elitism_factor": round(elitism_factor, 4),
+                    "diversity_factor": round(diversity_factor, 4),
+                    "crossover_factor": round(crossover_factor, 4),
+                    "p_mutation": round(p_mutation, 4),
+                }
+                print(f"Generation {i_generation} ({params_dict})")
 
-            population.append(individual)
+            new_population = []
 
-        for _ in range(num_random_individuals):
-            random_individual = np.random.permutation(base_order)
-            population.append(random_individual)
+            # 2) Selection
+            new_population.extend(
+                self.selection_function(
+                    population, int(elitism_factor * population_size)
+                )
+            )
+            elite_count = len(new_population)
 
-        return population
+            # 5) Diversity
+            new_population.extend(
+                self.diversification_function(
+                    population,
+                    int(diversity_factor * population_size),
+                    self.V,
+                    fitness_function=lambda x: self.fitness_function(
+                        x, self.nodes, self.distance_function)
+                )
+            )
+            elite_and_diversity_count = len(new_population)
 
-    def fitness_function(self, ga_instance: GA, solution: np.ndarray, solution_idx: int) -> float:
-        distance = 0.0
-        solution_shift = np.roll(solution, -1)
+            # 3) Crossovers
+            while len(new_population) < population_size:
+                p1 = new_population[np.random.randint(
+                    0, elite_and_diversity_count)]
+                p2 = new_population[np.random.randint(
+                    0, elite_and_diversity_count)]
 
-        for node_1_id, node_2_id in zip(solution, solution_shift):
-            distance += self.distance_function(self.nodes[node_1_id], self.nodes[node_2_id])
+                if p1 != p2:
+                    child = Individual()
+                    child.gnome = self.crossover_genes_function(
+                        p1.gnome, p2.gnome, crossover_factor)
+                    child.fitness = self.fitness_function(
+                        child.gnome, self.nodes, self.distance_function)
+                    new_population.append(child)
 
-        return -distance
+            # 4) Mutations
+            mutation_start_index = 0 if mutate_elite else elite_count
+            for individual in new_population[mutation_start_index:]:
+                individual.gnome = self.mutate_gene_function(
+                    individual.gnome, p_mutation)
+                individual.fitness = self.fitness_function(
+                    individual.gnome, self.nodes, self.distance_function)
+
+            # Logging
+            sorted_population = sorted(new_population, key=lambda x: x.fitness)
+            if verbose >= 2:
+                if verbose >= 3:
+                    print("\nPopulation:")
+                    for i in range(population_size):
+                        print(f"\t{new_population[i]}")
+                print(f"Population best: {sorted_population[0]}")
+                print()
+
+            # Prepare for the next generation
+            self.convergence_array.append(sorted_population[0].fitness)
+            self.current_solution = sorted_population[0].gnome
+            self.current_fitness = sorted_population[0].fitness
+            population = new_population
+            i_generation += 1
+            if elitism_factor_change is not None:
+                elitism_factor += elitism_factor_change
+            if diversity_factor_change is not None:
+                diversity_factor += diversity_factor_change
+            if crossover_factor_change is not None:
+                crossover_factor += crossover_factor_change
+            if p_mutation_change is not None:
+                p_mutation += p_mutation_change
+
+            if len(self.convergence_array)-patience > 0:
+                recent_convergences = self.convergence_array[len(
+                    self.convergence_array)-patience:]
+                recent_convergences_change = abs(
+                    recent_convergences[0] / recent_convergences[-1] - 1)
+                if patience_factor is not None and recent_convergences_change < patience_factor:
+                    if verbose >= 1:
+                        print(f"Patience reached. Recent population change: {
+                              recent_convergences_change}")
+                    break
+
+        if generations == i_generation:
+            if verbose >= 1:
+                print(f"Max generations reached: {generations}")
+
+    def get_solution(self):
+        return self.current_solution
+
+    def get_fitness(self):
+        return self.current_fitness
+
+    def get_convergence(self):
+        return self.convergence_array

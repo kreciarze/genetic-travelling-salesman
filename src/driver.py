@@ -1,6 +1,11 @@
 
 from genetic_experiment_conductor import run_genetic_experiment
-from travel_graph_classic import TravelGraphClassic
+from travel_graph import TravelGraph
+from ga_utils.crossover_functions import crossover_genes_pmx
+from ga_utils.distance_functions import distance_euclidean
+from ga_utils.diversification_functions import diversification_random
+from ga_utils.mutation_functions import mutate_gene_per_city
+from ga_utils.selection_functions import selection_elitism
 
 available_problems = ["easy", "bays29", "berlin52", "eil101", "xqf131"]
 
@@ -10,7 +15,12 @@ def run_all_problems():
         print(f"Running experiment for {problem_name}")
         run_genetic_experiment(             # Default values
             problem_name,                   
-            travel_graph_class=TravelGraphClassic,
+            travel_graph_class=TravelGraph,        
+            distance_function=distance_euclidean,
+            selection_function=selection_elitism,
+            diversification_function=diversification_random,
+            crossover_genes_function=crossover_genes_pmx,
+            mutate_gene_function=mutate_gene_per_city,
             population_size=1000,           # 1000
             generations=1000,               # 500
             elitism_factor=0.15,            # 0.15
@@ -45,16 +55,21 @@ def main():
     
     run_genetic_experiment(             # Default values
         problem_name,                   
-        travel_graph_class=TravelGraphClassic,
-        population_size=500,           # 1000
+        travel_graph_class=TravelGraph,   
+        distance_function=distance_euclidean,               
+        selection_function=selection_elitism, # or selection_roulette_wheel
+        diversification_function=diversification_random, # or diversification_roulette_wheel
+        crossover_genes_function=crossover_genes_pmx, # or crossover_genes_edge_recombination
+        mutate_gene_function=mutate_gene_per_city, # mutate_gene_displacement
+        population_size=500,            # 1000
         generations=1000,               # 500
-        elitism_factor=0.05,             # 0.15
-        elitism_factor_change=None,       # None
-        diversity_factor=0.15,           # 0.15
+        elitism_factor=0.15,            # 0.15
+        elitism_factor_change=None,     # None
+        diversity_factor=0.15,          # 0.15
         diversity_factor_change=None,   # None
-        crossover_factor=0.00,           # 0.1
-        crossover_factor_change=None, # None
-        p_mutation=0.5,                # 0.01
+        crossover_factor=0.1,           # 0.1
+        crossover_factor_change=None,   # None
+        p_mutation=0.01,                # 0.01
         p_mutation_change=None,         # None
         mutate_elite=True,              # True
         patience=50,                    # 50

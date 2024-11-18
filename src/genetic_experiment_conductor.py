@@ -7,11 +7,25 @@ from parser.weights_parser import parse_weights_file
 from solution_exporter import save_solution_to_file
 from plotter import plot_convergence_to_file, plot_nodes_to_file
 
-from travel_graph_classic import TravelGraphClassic, euclidean_distance
 from travel_graph import TravelGraph
+from ga_utils.distance_functions import distance_euclidean
+from ga_utils.crossover_functions import crossover_genes_pmx
+from ga_utils.diversification_functions import diversification_random
+from ga_utils.mutation_functions import mutate_gene_per_city
+from ga_utils.selection_functions import selection_elitism
 
 
-def run_genetic_experiment(problem_name, travel_graph_class=TravelGraphClassic, **kwargs_find_shortest_path):
+
+def run_genetic_experiment(
+        problem_name, 
+        travel_graph_class=TravelGraph,
+        distance_function=distance_euclidean,
+        selection_function=selection_elitism,
+        diversification_function=diversification_random,
+        crossover_genes_function=crossover_genes_pmx,
+        mutate_gene_function=mutate_gene_per_city,
+        **kwargs_find_shortest_path
+    ):
 
     # parse the files
     # get tsp file
@@ -35,7 +49,7 @@ def run_genetic_experiment(problem_name, travel_graph_class=TravelGraphClassic, 
     )
 
     # get weights file (if exists)
-    distance_function = euclidean_distance
+    distance_function = distance_euclidean
     weights_file_path = f"data/{problem_name}/{problem_name}.weights"
     weights_file = parse_weights_file(
         file_path=weights_file_path, nodes=tsp_file.nodes)
@@ -47,6 +61,10 @@ def run_genetic_experiment(problem_name, travel_graph_class=TravelGraphClassic, 
     travel_graph = travel_graph_class(
         nodes=nodes,
         distance_function=distance_function,
+        selection_function = selection_function,
+        diversification_function = diversification_function,
+        crossover_genes_function = crossover_genes_function,
+        mutate_gene_function = mutate_gene_function,
     )
     start_time = time.perf_counter()
     try:
