@@ -11,13 +11,16 @@ def run_all_problems():
         run_genetic_experiment(             # Default values
             problem_name,                   
             travel_graph_class=TravelGraphClassic,
-            population_size=1000,            # 500
-            generations=1000,                # 500
+            population_size=1000,           # 1000
+            generations=1000,               # 500
             elitism_factor=0.15,            # 0.15
+            elite_factor_change=None,       # None
             diversity_factor=0.15,          # 0.15
-            linear_selection_factor=0.5,    # 0.5
-            crossover_factor=0.1,        # 10/131
+            diversity_factor_change=None,   # None
+            crossover_factor=0.1,           # 0.1
+            crossover_factor_change=None,   # None
             p_mutation=0.01,                # 0.01
+            p_mutation_change=None,         # None
             mutate_elite=True,              # True
             patience=50,                    # 50
             patience_factor=0.001,          # 0.001
@@ -43,13 +46,16 @@ def main():
     run_genetic_experiment(             # Default values
         problem_name,                   
         travel_graph_class=TravelGraphClassic,
-        population_size=1000,            # 500
-        generations=1000,                # 500
-        elitism_factor=0.15,            # 0.15
-        diversity_factor=0.3,          # 0.15
-        linear_selection_factor=0.5,    # 0.5
-        crossover_factor=0.1,        # 10/131
+        population_size=1000,           # 1000
+        generations=500,               # 500
+        elitism_factor=0.2,             # 0.15
+        elitism_factor_change=None,       # None
+        diversity_factor=0.3,           # 0.15
+        diversity_factor_change=-0.07/100,   # None
+        crossover_factor=0.2,           # 0.1
+        crossover_factor_change=-0.07/100, # None
         p_mutation=0.01,                # 0.01
+        p_mutation_change=None,         # None
         mutate_elite=True,              # True
         patience=50,                    # 50
         patience_factor=0.001,          # 0.001

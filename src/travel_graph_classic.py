@@ -114,17 +114,20 @@ class TravelGraphClassic:
 
     def find_shortest_path(
         self,
-        population_size=500,  # 500
-        generations=500,  # 500
-        elitism_factor=0.15,  # 0.15
-        diversity_factor=0.15,  # 0.15
-        linear_selection_factor=0.5,  # 0.5
-        crossover_factor=10/131,  # 10/131
-        p_mutation=0.01,  # 0.01
-        mutate_elite=True,  # True
-        patience=50,  # 50
-        patience_factor=0.001,  # 0.001
-        verbose=2,  # 2
+        population_size=1000,           # 1000
+        generations=500,                # 500
+        elitism_factor=0.15,            # 0.15
+        elitism_factor_change=None,     # None
+        diversity_factor=0.15,          # 0.15
+        diversity_factor_change=None,   # None
+        crossover_factor=0.1,           # 0.1
+        crossover_factor_change=None,   # None
+        p_mutation=0.01,                # 0.01
+        p_mutation_change=None,         # None
+        mutate_elite=True,              # True
+        patience=50,                    # 50
+        patience_factor=0.001,          # 0.001
+        verbose=2,                      # 2
     ):
         i_generation = 1
         population = []
@@ -146,7 +149,13 @@ class TravelGraphClassic:
         # 6) Evolution
         while i_generation <= generations:
             if verbose >= 1:
-                print(f"Generation {i_generation}")
+                params_dict = {
+                    "elitism_factor": round(elitism_factor,4),
+                    "diversity_factor": round(diversity_factor,4),
+                    "crossover_factor": round(crossover_factor,4),
+                    "p_mutation": round(p_mutation,4),
+                }
+                print(f"Generation {i_generation} ({params_dict})")
 
             new_population = []
 
@@ -166,10 +175,7 @@ class TravelGraphClassic:
             elite_and_diversity_count = len(new_population)
 
             # 3) Crossovers
-            linear_selection_factor
             while len(new_population) < population_size:
-                # p1 = population[TravelGraphClassic.rand_num(0, int(linear_selection_factor*len(population)))]
-                # p2 = population[TravelGraphClassic.rand_num(0, int(linear_selection_factor*len(population)))]
                 p1 = population[TravelGraphClassic.rand_num(
                     0, elite_and_diversity_count)]
                 p2 = population[TravelGraphClassic.rand_num(
@@ -207,6 +213,14 @@ class TravelGraphClassic:
             self.current_fitness = sorted_population[0].fitness
             population = new_population
             i_generation += 1
+            if elitism_factor_change is not None:
+                elitism_factor += elitism_factor_change
+            if diversity_factor_change is not None:
+                diversity_factor += diversity_factor_change
+            if crossover_factor_change is not None:
+                crossover_factor += crossover_factor_change
+            if p_mutation_change is not None:
+                p_mutation += p_mutation_change
 
             if len(self.convergence_array)-patience > 0:
                 recent_convergences = self.convergence_array[len(
