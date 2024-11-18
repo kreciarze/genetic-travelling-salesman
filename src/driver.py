@@ -47,13 +47,13 @@ def main():
         problem_name,                   
         travel_graph_class=TravelGraphClassic,
         population_size=1000,           # 1000
-        generations=500,               # 500
-        elitism_factor=0.2,             # 0.15
+        generations=1000,               # 500
+        elitism_factor=0.15,             # 0.15
         elitism_factor_change=None,       # None
-        diversity_factor=0.3,           # 0.15
-        diversity_factor_change=-0.07/100,   # None
-        crossover_factor=0.2,           # 0.1
-        crossover_factor_change=-0.07/100, # None
+        diversity_factor=0.15,           # 0.15
+        diversity_factor_change=None,   # None
+        crossover_factor=0.1,           # 0.1
+        crossover_factor_change=-0.009/100, # None
         p_mutation=0.01,                # 0.01
         p_mutation_change=None,         # None
         mutate_elite=True,              # True
