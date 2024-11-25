@@ -9,10 +9,10 @@ from plotter import plot_convergence_to_file, plot_nodes_to_file
 
 from travel_graph import TravelGraph
 from ga_utils.distance_functions import distance_euclidean
-from ga_utils.crossover_functions import crossover_genes_pmx
+from ga_utils.crossover_functions import CrossoverGenesPMX
 from ga_utils.diversification_functions import diversification_random
-from ga_utils.mutation_functions import mutate_gene_per_city
-from ga_utils.selection_functions import selection_elitism
+from ga_utils.mutation_functions import MutationRandomMutation
+from ga_utils.selection_functions import SelectionTournament
 
 
 
@@ -20,10 +20,10 @@ def run_genetic_experiment(
         problem_name, 
         travel_graph_class=TravelGraph,
         distance_function=distance_euclidean,
-        selection_function=selection_elitism,
+        selection=SelectionTournament(),
         diversification_function=diversification_random,
-        crossover_genes_function=crossover_genes_pmx,
-        mutate_gene_function=mutate_gene_per_city,
+        crossover=CrossoverGenesPMX(),
+        mutation=MutationRandomMutation(),
         **kwargs_find_shortest_path
     ):
 
@@ -61,10 +61,10 @@ def run_genetic_experiment(
     travel_graph = travel_graph_class(
         nodes=nodes,
         distance_function=distance_function,
-        selection_function = selection_function,
+        selection = selection,
         diversification_function = diversification_function,
-        crossover_genes_function = crossover_genes_function,
-        mutate_gene_function = mutate_gene_function,
+        crossover = crossover,
+        mutation = mutation,
     )
     start_time = time.perf_counter()
     try:

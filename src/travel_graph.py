@@ -1,10 +1,10 @@
 import numpy as np
 
 from ga_utils.individual import Individual
-from ga_utils.crossover_functions import CrossoverFunction, crossover_genes_pmx
+from ga_utils.crossover_functions import CrossoverGenesPMX
 from ga_utils.diversification_functions import DiversificationFunction, diversification_random
-from ga_utils.mutation_functions import MutationFunction, mutate_gene_per_city
-from ga_utils.selection_functions import SelectionFunction, selection_elitism
+from ga_utils.mutation_functions import MutationRandomMutation
+from ga_utils.selection_functions import SelectionElitism
 from ga_utils.distance_functions import DistanceFunction, distance_euclidean
 from ga_utils.fintess_functions import FitnessFunction, fitness_classic
 
@@ -16,10 +16,10 @@ class TravelGraph:
         nodes: np.ndarray,
         distance_function: DistanceFunction = distance_euclidean,
         fitness_function: FitnessFunction = fitness_classic,
-        selection_function: SelectionFunction = selection_elitism,
+        selection = SelectionElitism(),
         diversification_function: DiversificationFunction = diversification_random,
-        crossover_genes_function: CrossoverFunction = crossover_genes_pmx,
-        mutate_gene_function: MutationFunction = mutate_gene_per_city,
+        crossover = CrossoverGenesPMX(),
+        mutation = MutationRandomMutation(),
         
     ) -> None:
         self.nodes = nodes
@@ -30,25 +30,18 @@ class TravelGraph:
 
         self.distance_function = distance_function
         self.fitness_function = fitness_function
-        self.selection_function = selection_function
+        self.selection = selection
         self.diversification_function = diversification_function
-        self.crossover_genes_function = crossover_genes_function
-        self.mutate_gene_function = mutate_gene_function
+        self.crossover = crossover
+        self.mutation = mutation
 
 
     def find_shortest_path(
         self,
         population_size=1000,           # 1000
         generations=500,                # 500
-        elitism_factor=0.15,            # 0.15
-        elitism_factor_change=None,     # None
         diversity_factor=0.15,          # 0.15
         diversity_factor_change=None,   # None
-        crossover_factor=0.1,           # 0.1
-        crossover_factor_change=None,   # None
-        p_mutation=0.01,                # 0.01
-        p_mutation_change=None,         # None
-        mutate_elite=True,              # True
         patience=50,                    # 50
         patience_factor=0.001,          # 0.001
         verbose=2,                      # 2
@@ -73,10 +66,10 @@ class TravelGraph:
         while i_generation <= generations:
             if verbose >= 1:
                 params_dict = {
-                    "elitism_factor": round(elitism_factor, 4),
+                    "selection_factor": round(self.selection.selection_factor, 4),
                     "diversity_factor": round(diversity_factor, 4),
-                    "crossover_factor": round(crossover_factor, 4),
-                    "p_mutation": round(p_mutation, 4),
+                    "crossover_factor": round(self.crossover.crossover_factor, 4) if self.crossover.crossover_factor is not None else None,
+                    "mutation_factor": round(self.mutation.mutation_factor, 4),
                 }
                 print(f"Generation {i_generation} ({params_dict})")
 
@@ -84,8 +77,8 @@ class TravelGraph:
 
             # 2) Selection
             new_population.extend(
-                self.selection_function(
-                    population, int(elitism_factor * population_size)
+                self.selection.select(
+                    population
                 )
             )
             elite_count = len(new_population)
@@ -111,17 +104,17 @@ class TravelGraph:
 
                 if p1 != p2:
                     child = Individual()
-                    child.gnome = self.crossover_genes_function(
-                        p1.gnome, p2.gnome, crossover_factor)
+                    child.gnome = self.crossover.crossover(
+                        p1.gnome, p2.gnome)
                     child.fitness = self.fitness_function(
                         child.gnome, self.nodes, self.distance_function)
                     new_population.append(child)
 
             # 4) Mutations
-            mutation_start_index = 0 if mutate_elite else elite_count
+            mutation_start_index = 0 if self.mutation.mutate_elite else elite_count
             for individual in new_population[mutation_start_index:]:
-                individual.gnome = self.mutate_gene_function(
-                    individual.gnome, p_mutation)
+                individual.gnome = self.mutation.mutate(
+                    individual.gnome)
                 individual.fitness = self.fitness_function(
                     individual.gnome, self.nodes, self.distance_function)
 
@@ -141,14 +134,11 @@ class TravelGraph:
             self.current_fitness = sorted_population[0].fitness
             population = new_population
             i_generation += 1
-            if elitism_factor_change is not None:
-                elitism_factor += elitism_factor_change
             if diversity_factor_change is not None:
                 diversity_factor += diversity_factor_change
-            if crossover_factor_change is not None:
-                crossover_factor += crossover_factor_change
-            if p_mutation_change is not None:
-                p_mutation += p_mutation_change
+            self.selection.update()
+            self.crossover.update()
+            self.mutation.update()
 
             if len(self.convergence_array)-patience > 0:
                 recent_convergences = self.convergence_array[len(

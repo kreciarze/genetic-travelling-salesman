@@ -2,7 +2,7 @@ from typing import Callable, List
 import numpy as np
 
 from ga_utils.individual import Individual
-from ga_utils.selection_functions import selection_roulette_wheel
+from ga_utils.selection_functions import SelectionRouletteWheel
 
 type DiversificationFunction = Callable[[
     List[Individual], int, int, Callable], List[Individual]]
@@ -19,6 +19,7 @@ def diversification_random(population, num_selections, V, fitness_function):
 
 @staticmethod
 def diversification_roulette_wheel(population, num_selections, V, fitness_function):
-    return selection_roulette_wheel(
+    selection = SelectionRouletteWheel()
+    return selection.select(
         population, num_selections
     )
