@@ -157,6 +157,172 @@ Tabela \ref{tab:results}: Porównanie wyników \label{tab:results}
 
 - Wykonanie eksperymentów dla większych zestawów miast. -->
 
+# Kamień milowy 2 - finalna wersja projektu
+
+W ramach drugiego kamienia milowego zaimplementowaliśmy własną wersję algorytmu genetycznego w Pythonie, zamiast korzystania z biblioteki PyGAD. Nasza decyzja wynikała z chęci zrozumienia działania algorytmu genetycznego na poziomie implementacji oraz z możliwością dostosowania go do naszych potrzeb.
+
+## Własna biblioteka
+
+- Implementacja ładowania danych z plików TSP
+- Implementacja algorytmu genetycznego
+- Implementacja następujących operatorów genetycznych:
+  - **Selekcja elitarna**
+  - **Selekcja turniejowa**
+  - **Selekcja ruletkowa**
+  - **Krzyżowanie PMX**
+  - **Krzyżowanie rekomibinacyjne (ang. recombination)**
+  - **Mutacja każdego genu z prawdopodobieństwem $p_m$**
+  - **Mutacja przez przesunięcie (ang. displacement)**
+  - **Mutacja "losowa mutacja"**
+- Implementacja funkcji oceny jakości rozwiązania
+- Implementacja mechanizmu zatrzymywania algorytmu po określonej liczbie iteracji bez poprawy wyniku
+- Implementacja mechanizmu zmiany parametrów algorytmu w trakcie jego działania
+- Implementacja dywersyfikacji populacji
+- Implementacja wizualizacji wyników
+- Implementacja zapisywania wyników do plików
+
+## Testy i walidacja
+
+W celu oceny i walidacji rozwiązania przeprowadziliśmy testy dla zestawów miast o różnych rozmiarach:
+
+- `easy` - 6 miast, źródło: własne
+- `bays29` - 29 miast, źródło: [@tsplib]
+- `berlin52` - 52 miast, źródło: [@tsplib]
+- `eil101` - 101 miast,  źródło: [@tsplib]
+- `xqf131` - 131 miast, źródło: [@vlsiData]
+
+Porównanie rozwiązań prezentuje tabela \ref{tab:results-full}.
+
+---
+
+### Zestaw prosty - 6 miast
+
+Rysunek \ref{fig:sol-easy-input-2} przedstawia dane wejściowe zestawu `easy`, a rysunek \ref{fig:sol-easy-gt-2} poprawne rozwiązanie tego zestawu. Rozwiązanie uzyskane za pomocą algorytmu genetycznego prezentuje rysunek \ref{fig:sol-easy-output-2}.
+
+---
+
+![Dane wejściowe zestawu `easy`.\label{fig:sol-easy-input-2}](../../data/easy/easy.png){height=80%}
+
+--- 
+
+![Poprawne rozwiązanie zestawu `easy`.\label{fig:sol-easy-gt-2}](../../data/easy/easy_tour.png){height=80%}
+
+---
+
+![Rozwiązanie zestawu `easy`.\label{fig:sol-easy-output-2}](../../data/easy/easy_solution.png){height=80%}
+
+---
+
+### Zestaw bays29 - 29 miast
+
+Rysunek \ref{fig:sol-bays29-input} przedstawia dane wejściowe zestawu `bays29`, a rysunek \ref{fig:sol-bays29-gt} poprawne rozwiązanie tego zestawu. Rozwiązanie uzyskane za pomocą algorytmu genetycznego prezentuje rysunek \ref{fig:sol-bays29-output}.
+
+---
+
+![Dane wejściowe zestawu bays29.\label{fig:sol-bays29-input}](../../data/bays29/bays29.png){height=80%}
+
+---
+
+![Poprawne rozwiązanie zestawu bays29.\label{fig:sol-bays29-gt}](../../data/bays29/bays29_tour.png){height=80%}
+
+---
+
+![Rozwiązanie zestawu bays29.\label{fig:sol-bays29-output}](../../data/bays29/bays29_solution.png){height=80%}
+
+---
+
+### Zestaw berlin52 - 52 miast
+
+Rysunek \ref{fig:sol-berlin52-input} przedstawia dane wejściowe zestawu `berlin52`, a rysunek \ref{fig:sol-berlin52-gt} poprawne rozwiązanie tego zestawu. Rozwiązanie uzyskane za pomocą algorytmu genetycznego prezentuje rysunek \ref{fig:sol-berlin52-output}.
+
+---
+
+![Dane wejściowe zestawu berlin52.\label{fig:sol-berlin52-input}](../../data/berlin52/berlin52.png){height=80%}
+
+---
+
+![Poprawne rozwiązanie zestawu berlin52.\label{fig:sol-berlin52-gt}](../../data/berlin52/berlin52_tour.png){height=80%}
+
+---
+
+![Rozwiązanie zestawu berlin52.\label{fig:sol-berlin52-output}](../../data/berlin52/berlin52_solution.png){height=80%}
+
+---
+
+### Zestaw eil101 - 101 miast
+
+Rysunek \ref{fig:sol-eil101-input} przedstawia dane wejściowe zestawu `eil101`, a rysunek \ref{fig:sol-eil101-gt} poprawne rozwiązanie tego zestawu. Rozwiązanie uzyskane za pomocą algorytmu genetycznego prezentuje rysunek \ref{fig:sol-eil101-output}.
+
+---
+
+![Dane wejściowe zestawu eil101.\label{fig:sol-eil101-input}](../../data/eil101/eil101.png){height=80%}
+
+---
+
+![Poprawne rozwiązanie zestawu eil101.\label{fig:sol-eil101-gt}](../../data/eil101/eil101_tour.png){height=80%}
+
+---
+
+![Rozwiązanie zestawu eil101.\label{fig:sol-eil101-output}](../../data/eil101/eil101_solution.png){height=80%}
+
+---
+
+### Zestaw xqf131 - 131 miast
+
+Rysunek \ref{fig:sol-xqf131-input-2} przedstawia dane wejściowe zestawu `xqf131`, a rysunek \ref{fig:sol-xqf131-gt-2} poprawne rozwiązanie tego zestawu. Rozwiązanie uzyskane za pomocą algorytmu genetycznego prezentuje rysunek \ref{fig:sol-xqf131-output-2}.
+
+---
+
+![Dane wejściowe zestawu xqf131.\label{fig:sol-xqf131-input-2}](../../data/xqf131/xqf131.png){height=80%}
+
+---
+
+![Poprawne rozwiązanie zestawu xqf131.\label{fig:sol-xqf131-gt-2}](../../data/xqf131/xqf131_tour.png){height=80%}
+
+---
+
+![Rozwiązanie zestawu xqf131.\label{fig:sol-xqf131-output-2}](../../data/xqf131/xqf131_solution.png){height=80%}
+
+## Porównanie wyników
+
+
+Tabela \ref{tab:results-full}: Porównanie wyników \label{tab:results-full}
+
+| Nazwa          |rozmiar|optymalna długość trasy|długość trasy* |stosunek długości tras|  czas obliczeń |
+|:---------------|------:|----------------------:|--------------:|---------------------:|---------------:|
+| easy           |     6 |                 12.17 |         12.17 |                 1    |           2.55 |
+| bays29         |    29 |               2020    |       2103    |                 1.04 |          69.74 |
+| berlin52       |    52 |               7542    |       8529.07 |                 1.13 |          33.74 |
+| eil101         |   101 |                629    |        900.46 |                 1.43 |         403.37 |
+| xqf131         | 	 131 |                  564  |        926.53 |                 1.64	|         481.95 |
+
+
+\* Najlepsza otrzymana długość trasy po dostrajaniu parametrów algorytmu 
+
+# Wnioski
+
+- **Skuteczność algorytmu genetycznego**: Algorytmy genetyczne potwierdziły swoją przydatność w rozwiązywaniu problemu TSP. Dzięki różnorodnym operatorom genetycznym oraz dywersyfikacji populacji uzyskano konkurencyjne wyniki.
+
+- **Eksploracja i eksploatacja**: Zastosowanie różnych operatorów genetycznych pozwoliło na równoważenie eksploracji i eksploatacji przestrzeni rozwiązań, co miało kluczowe znaczenie dla uzyskania dobrych wyników. DObre zrównoważenie tych dwóch aspektów jest jednak bardzo trudne i wymaga odpowiedniego dostrajania parametrów algorytmu.
+
+- **Znaczenie parametrów**: Parametry algorytmu, takie jak prawdopodobieństwo mutacji czy liczba iteracji bez poprawy wyniku, miały istotny wpływ na jakość końcowego rozwiązania. Mechanizm dynamicznej zmiany parametrów był efektywnym sposobem na poprawę wydajności algorytmu. Wymagają one jednak odpowiedniego dostrajania w zależności od instancji problemu.
+
+---
+
+- **Dywersyfikacja populacji**: Mechanizmy zapewniające różnorodność genotypów w populacji znacząco wpłynęły na poprawę wyników, zwłaszcza w końcowych stadiach optymalizacji, zapobiegając przedwczesnej zbieżności algorytmu.
+
+- **Znaczenie literatury**: Analiza literatury dostarczyła wielu inspiracji dotyczących różnych podejść do implementacji algorytmu genetycznego dla TSP. Wykorzystanie tych inspiracji pomogło w zaprojektowaniu solidnej architektury algorytmu. 
+
+- **Możliwości rozwoju**: Implementacja innych podejść do operatorów genetycznych, m.in. `Cyclic Crossover Operator` wraz `Subdivision Mutation Operator`, mogłaby przynieść dodatkowe korzyści w postaci lepszych wyników.
+  
+# Podsumowanie
+
+W ramach projektu zrealizowano implementację algorytmu genetycznego (AG) w celu rozwiązania problemu komiwojażera (TSP). Projekt obejmował kompleksowe podejście do problemu, w tym zaimplementowanie narzędzi do wczytywania danych, wielu operatorów genetycznych, mechanizmów sterowania parametrami oraz wizualizacji i zapisu wyników. Wyniki eksperymentów potwierdzają skuteczność zastosowanego algorytmu, szczególnie w przypadku mniejszych instancji problemu.
+
+Dzięki implementacji różnorodnych operatorów genetycznych, takich jak selekcja `tournament`, krzyżowanie `PMX` i losowe mutacje, oraz mechanizmów poprawiających jakość poszukiwań (np. dywersyfikacja populacji, mechanizm zatrzymania algorytmu), udało się uzyskać dobre rozwiązania dla większości testowanych instancji TSP. Wprowadzenie dynamicznej zmiany parametrów algorytmu pozwoliło na lepsze dostosowanie poszukiwań w zależności od stadium optymalizacji.
+
 # Dziękujemy za uwagę
 
 # Bibliografia
+
+---
