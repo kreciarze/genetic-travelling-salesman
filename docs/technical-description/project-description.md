@@ -18,24 +18,34 @@ header-includes:
 **Cele:** 
 
 - Opracowanie bliskiego optimum rozwiązania problemu komiwojażera
-- Implementacja algorytmu w Pythonie przy użyciu PyGAD i wizualizacja wyników
+- Implementacja algorytmu w Pythonie i wizualizacja wyników
 - Ocena i walidacja rozwiązania, porównanie z innymi metodami optymalizacji
 
-**Stos technologiczny:** Python, PyGAD
+**Stos technologiczny:** Python, Numpy, Matplotlib
 
 # Opis Techniczny
 
 ## Struktura Kodu
 
-Kod projektu składa się z następujących głównych elementów:
+Kod projektu znajduje się w folderze `src` i składa się z następujących głównych elementów:
 
-- **Klasa `TravelGraph`**:
-  - Odpowiada za zarządzanie miastami oraz implementację metod związanych z wyszukiwaniem najkrótszej ścieżki.
-- **Metody algorytmu genetycznego**:
-  - `pygad.GA` jest używany do przeprowadzenia procesu optymalizacji.
-- **Funkcje pomocnicze**:
-  - `generate_random_distance_matrix` generuje macierz odległości
-  - `main` obsługuje główną logikę wywoływania algorytmu.
+- **Klasa `TravelGraph`** znajdująca się w pliku `travel_graph.py`:
+  - Odpowiada za przeprowadzenie algorytmu genetycznego.
+  - Przeprowadza inicjalizację, selekcję, krzyżowanie, mutację, dywersyfikację 
+  - Przechowuje najlepszą ścieżkę oraz jej wyniki, a także dane dotyczące przebiegu algorytmu.
+- **Elementy algorytmu genetycznego** znajdujące się w plikach w folderze `ga_utils`:
+  - `crossover_functions.py` - zawiera funkcje krzyżowania.
+  - `distance_functions.py` - zawiera funkcje obliczające odległość między miastami.
+  - `diversification_functions.py` - zawiera funkcje zwiększające różnorodność populacji.
+  - `fitness_functions.py` - zawiera funkcje oceny przystosowania.
+  - `mutation_functions.py` - zawiera funkcje mutacji.
+  - `selection_functions.py` - zawiera funkcje selekcji.
+- **Funkcje pomocnicze** znajdujące się w plikach:
+  - `driver.py` - obsługują główną logikę wywoływania algorytmu.
+  - `genetic_experiment_conductor.py` - przeprowadzają eksperymenty z różnymi parametrami algorytmu genetycznego.
+  - `plotter.py` - odpowiadają za wizualizację wyników.
+  - `solution_exporter.py` - eksportują wyniki do plików.
+  - `parser/*` - parsują pliki z modelami miast.
 
 ## Szczegóły Techniczne i Algorytmiczne
 
@@ -43,44 +53,81 @@ Kod projektu składa się z następujących głównych elementów:
 
 - **Lista Miast (`nodes`)**: 
   - Zawiera listę par x i y, które symbolizują miasta odwiedzane w ramach ścieżki podróży.
+  - Lub, w przypadku plików określających odległości między miastami macierzą odległości, lista indeksów miast.
 
 ### Algorytm Genetyczny
 
-Parametry mogą ulec zmianie w czasie rozwoju projektu, w zależności od optymalizacji i testów.
-
-- **Inicjalizacja**: 
-  - Tworzona jest populacja rozwiązań reprezentujących różne ścieżki między miastami.
-- **Funkcja Dopasowania (`fitness_function`)**:
-  - Oblicza sumaryczną odległość dla danej ścieżki (rozwiązania). Im mniejsza odległość, tym lepsze rozwiązanie (wartość minimalizowana).
-- **Selekcja Rodziców**: 
-  - Typ selekcji ${SSS}$ (Steady-State Selection) pozwala wybrać najlepszych rodziców z każdej generacji, którzy są przekazywani do następnych pokoleń.
-- **Krzyżowanie**: 
-  - Wybór krzyżowania jednopunktowego (`single_point`) pozwala losowo łączyć sekwencje genów dwóch rodziców w celu stworzenia nowych rozwiązań.
-- **Mutacja**: `mutation_type="random"` 
-  - Modyfikuje losowo wybrane geny w populacji potomków, co zapobiega wpadaniu algorytmu w lokalne minima.
+- **Inicjalizacja**. Tworzenie populacji rozwiązań reprezentujących różne ścieżki między miastami.
+- **Funkcja Dopasowania (`fitness_function`)**. Obliczanie sumarycznej odległość dla danej ścieżki (rozwiązania).
+  - `fitness_classic` - oblicza sumę odległości między miastami. Im mniejsza odległość, tym lepsze rozwiązanie (wartość minimalizowana).
+- **Selekcja Rodziców**. Wybór rodziców wybraną metoda selekcji: 
+  - `SelectionElitism` - wybiera najlepsze rozwiązania z populacji.
+  - `SelectionRouletteWheel` - wybiera rozwiązania na podstawie ich przystosowania.
+  - `SelectionTournament` - wybiera rozwiązania metodą turniejową.
+- **Krzyżowanie**. Tworzenie potomstwa na podstawie wybranego rodzaju krzyżowania:
+  - `CrossoverGenesPMX` - krzyżowanie PMX.
+  - `CrossoverGenesEdgeRecombination` - krzyżowanie metodą rekombinacji krawędzi.
+- **Mutacja**:. Mutowanie potomstwa wybraną metodą mutacji:
+  - `MutationGenePerCity` - mutacja każdego genu z określonym prawdopodobieństwem.
+  - `MutationGeneDisplacement` - mutacja przemieszczenia podciągu genów.
+  - `MutationRandomMutation` - losowa mutacja z wybranych.
+- **Dywersyfikacja**. Zwiększanie różnorodności populacji:
+  - `diversification_random` - zwiększa różnorodność populacji poprzez dodanie losowych rozwiązań.
+  - `diversification_roulette_wheel` - zwiększa różnorodność populacji poprzez dodanie rozwiązań wybranych metodą ruletki.
+- Zastępowanie starej populacji nową i powtarzanie procesu dla kolejnych generacji.
 
 ## Parametry Algorytmu i Optymalizacja
 
-- **Liczba Generacji (`num_generations`)**: 
-  - Określa maksymalną liczbę iteracji, przez które przechodzi algorytm.
-- **Wielkość Populacji (`sol_per_pop`)**: 
-  - Odpowiada za liczbę potencjalnych rozwiązań w każdej generacji.
-- **Przestrzeń Genów (`gene_space`)**:
-  - Zapewnia, że geny przyjmują wartości tylko w zakresie dostępnych indeksów miast, bez powtórzeń w ścieżce.
+Algorytm jest elastyczny i łatwy w modyfikacji, w tym oferuje proste określanie parametrów wybranych operacji genetycznych (m.in. dzięki zastosowaniu podejścia OOP). 
+
+Uruchamianie algorytmu odbywa się poprzez wywołanie funkcji `find_shortest_path` klasy `TravelGraph` z odpowiednimi parametrami: 
+
+- Inicjalizacja obiektu klasy `TravelGraph` podając następujące parametry:
+  - `nodes` - lista miast.
+  - `distance_function` - funkcja obliczająca odległość między miastami.
+  - `fitness_function` - funkcja oceny przystosowania.
+  - `selection` - obiekt klasy selekcji.
+  - `diversification_function` - funkcja zwiększająca różnorodność populacji.
+  - `crossover` - obiekt klasy krzyżowania.
+  - `mutation` - obiekt klasy mutacji.
+  
+- Wywołanie metody `find_shortest_path` klasy `TravelGraph` z następującymi parametrami:
+  - `population_size` - wielkość populacji.
+  - `generations` - liczba generacji.
+  - `diversity_factor` - ułamek populacji, który ma zostać wygenerowany z użyciem funkcji zwiększającej różnorodność.
+  - `diversity_factor_change` - zmiana wartości `diversity_factor` w kolejnych generacjach.
+  - `patience` - liczba generacji bez poprawy, po której algorytm zakończy działanie.
+  - `patience_factor` - współczynnik określający minimalną różnicę między najlepszymi rozwiązaniami w populacji, aby uznać, że doszło do poprawy.
+  - `verbose` - tryb wyświetlania informacje o postępie algorytmu.
 
 ## Wynik i Analiza Rozwiązania
 
-Algorytm kończy swoje działanie, zwracając:
+Algorytm kończy swoje działanie po osiągnięciu maksymalnej liczby generacji lub po przekroczeniu wartości `patience`. 
+Dostęp do wyników i analizy rozwiązania uzyskujemy poprzez następujące metody klasy `TravelGraph`.
 
-- **Najlepszą Ścieżkę**: 
-  - Lista indeksów podanych miast.
-- **Odległość Najlepszej Ścieżki**: 
-  - Całkowita długość tej trasy.
+- `get_solution()` - zwraca najlepsze rozwiązanie.
+- `get_fitness()` - zwraca wartość funkcji przystosowania dla najlepszego rozwiązania.
+- `get_convergence()` - zwraca listę wartości funkcji przystosowania w kolejnych generacjach.
 
-## Przykładowe Uruchomienie
+## Przeprowadzanie eksperymentów
+
+Proces przeprowadzenia eksperymentu z wykorzystaniem algorytmu genetycznego realizuje funkcja `run_genetic_experiment` znajdująca się wp pliku `genetic_experiment_conductor.py`. Proces ten składa się z następujących kroków:
+
+- Wczytanie miast i optymalnego rozwiązania z pliku .tsp na bazie argumentu `problem_name`. Na ich bazie zdefiniowanie listy miast `nodes` oraz funkcji obliczającej odległość między nimi `distance_function`.
+- Wizualizacja miast oraz optymalnego rozwiązania problemu (poprzez zapis do pliku).
+- Stworzenie obiektu klasy solvera na bazie argumentu `travel_graph_class` (domyślnie `TravelGraph`) oraz przekazanie mu odpowiednich parametrów (`nodes`,
+`distance_function`, `selection`, `diversification_function`, `crossover`, `mutation`).
+- Uruchomienie algorytmu genetycznego z wykorzystaniem metody `find_shortest_path` z odpowiednimi parametrami (wszystkimi pozostałymi, które nie zostały zdefiniowane w kroku 2, a zostały przekazane jako argumenty funkcji). 
+- Zmierzenie czasu wykonania algorytmu.
+- Zapis wyników do pliku.
+- Wizualizacja wyników (poprzez zapis do pliku).
+- Wizualizacja zbieżności algorytmu (poprzez zapis do pliku).
+
+## Uruchomienie Programu
 
 Po uruchomieniu programu, wywołana zostaje funkcja `main`, która:
-- Odczytuje miasta z pliku .tsp
-- Tworzy instancję klasy `TravelGraph`.
-- Wywołuje metodę `find_shortest_path`, która uruchamia algorytm genetyczny i wyświetla najkrótszą znalezioną ścieżkę oraz jej odległość.
 
+- Pyta o wybór nazwy problemu.
+- Definiuje parametry algorytmu genetycznego,
+- Tworzy obiekty klas reprezentujących operacje genetyczne na bazie wybranych parametrów.
+- Uruchamia funkcję `run_genetic_experiment` przeprowadzając eksperyment z wybranymi parametrami na wybranym problemie.
