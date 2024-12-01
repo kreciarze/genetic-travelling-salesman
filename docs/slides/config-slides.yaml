@@ -4,6 +4,7 @@ title: |
 author: Piotr Karaś, Tomasz Kawiak, Mateusz Mazur
 date: \today
 header-includes:
-    - \usepackage[polish]{babel} # sudo apt install texlive-lang-polish
+    - \setbeamertemplate{frametitle continuation}{}
+lang: pl # sudo apt install texlive-lang-polish
 link-citations: true
 aspectratio: 169

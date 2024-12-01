@@ -5,10 +5,10 @@
 **Cele:** 
 
 - Opracowanie bliskiego optimum rozwiązania problemu komiwojażera
-- Implementacja algorytmu w Pythonie przy użyciu PyGAD i wizualizacja wyników
+- Implementacja algorytmu w Pythonie i wizualizacja wyników
 - Ocena i walidacja rozwiązania, porównanie z innymi metodami optymalizacji
 
-**Stos technologiczny:** Python [@vanrossum2009python], PyGAD [@gad2023pygad]
+**Stos technologiczny:** Python [@vanrossum2009python], Numpy [@harris2020array], Matplotlib [@Hunter:2007]
 
 # Programowanie i algorytmy genetyczne 
 
@@ -164,19 +164,18 @@ W ramach drugiego kamienia milowego zaimplementowaliśmy własną wersję algory
 ## Własna biblioteka
 
 - Implementacja ładowania danych z plików TSP
-- Implementacja algorytmu genetycznego
-- Implementacja następujących operatorów genetycznych:
-  - **Selekcja elitarna**
-  - **Selekcja turniejowa**
-  - **Selekcja ruletkowa**
-  - **Krzyżowanie PMX**
-  - **Krzyżowanie rekomibinacyjne (ang. recombination)**
-  - **Mutacja każdego genu z prawdopodobieństwem $p_m$**
-  - **Mutacja przez przesunięcie (ang. displacement)**
-  - **Mutacja "losowa mutacja"**
+- Implementacja algorytmu genetycznego oraz następujących operatorów:
+  - **Selekcja elitarna** (ang. *elitism*), źródło: [@enwiki:1225409343]
+  - **Selekcja turniejowa** (ang. *tournament*), źródło: [@enwiki:1225409343]
+  - **Selekcja ruletkowa** (ang. *roulette*), źródło: [@mondal2023genetic]
+  - **Krzyżowanie PMX** (ang. *partially mapped crossover*), źródło: [@ucoluk2002genetic]
+  - **Krzyżowanie rekomibinacyjne** (ang. *recombination*), źródło: [@enwiki:1066526924]
+  - **Mutacja każdego genu z danym prawdopodobieństwem**, źródło: [@ucoluk2002genetic]
+  - **Mutacja przez przesunięcie** (ang. *displacement*), źródło: [@larranaga1999genetic]
+  - **Mutacja "losowa mutacja"** - losowanie mutacji z powyższych
 - Implementacja funkcji oceny jakości rozwiązania
 - Implementacja mechanizmu zatrzymywania algorytmu po określonej liczbie iteracji bez poprawy wyniku
-- Implementacja mechanizmu zmiany parametrów algorytmu w trakcie jego działania
+- Implementacja mechanizmu zmiany parametrów alg. w trakcie jego działania
 - Implementacja dywersyfikacji populacji
 - Implementacja wizualizacji wyników
 - Implementacja zapisywania wyników do plików
@@ -288,28 +287,26 @@ Rysunek \ref{fig:sol-xqf131-input-2} przedstawia dane wejściowe zestawu `xqf131
 
 Tabela \ref{tab:results-full}: Porównanie wyników \label{tab:results-full}
 
-| Nazwa          |rozmiar|optymalna długość trasy|długość trasy* |stosunek długości tras|  czas obliczeń |
-|:---------------|------:|----------------------:|--------------:|---------------------:|---------------:|
-| easy           |     6 |                 12.17 |         12.17 |                 1    |           2.55 |
-| bays29         |    29 |               2020    |       2103    |                 1.04 |          69.74 |
-| berlin52       |    52 |               7542    |       8529.07 |                 1.13 |          33.74 |
-| eil101         |   101 |                629    |        900.46 |                 1.43 |         403.37 |
-| xqf131         | 	 131 |                  564  |        926.53 |                 1.64	|         481.95 |
+| Nazwa          |ilość miast|optymalna długość trasy|długość trasy* |stosunek długości tras|  czas obliczeń | czas obliczeń alg. brute-force |
+|:---------------|----------:|----------------------:|--------------:|---------------------:|---------------:|-------------------------------:|
+| easy           |         6 |                 12.17 |         12.17 |                 1    |           2.55 |                           2137 |
+| bays29         |        29 |                  2020 |       2103    |                 1.04 |          69.74 |                 $10,24 * 3600$ |
+| berlin52       |        52 |                  7542 |       8529.07 |                 1.13 |          33.74 |                             ** |
+| eil101         |       101 |                   629 |        900.46 |                 1.43 |         403.37 |                             ** |
+| xqf131         | 	     131 |                   564 |        926.53 |                 1.64	|         481.95 |                             ** |
 
+\* Najlepsza otrzymana długość trasy po dostrajaniu parametrów algorytmu \
+\** Algorytm nie zwrócił wyniku w ciągu 10 godzin
 
-\* Najlepsza otrzymana długość trasy po dostrajaniu parametrów algorytmu 
-
-# Wnioski
+# Wnioski {.allowframebreaks} 
 
 - **Skuteczność algorytmu genetycznego**: Algorytmy genetyczne potwierdziły swoją przydatność w rozwiązywaniu problemu TSP. Dzięki różnorodnym operatorom genetycznym oraz dywersyfikacji populacji uzyskano konkurencyjne wyniki.
 
-- **Eksploracja i eksploatacja**: Zastosowanie różnych operatorów genetycznych pozwoliło na równoważenie eksploracji i eksploatacji przestrzeni rozwiązań, co miało kluczowe znaczenie dla uzyskania dobrych wyników. DObre zrównoważenie tych dwóch aspektów jest jednak bardzo trudne i wymaga odpowiedniego dostrajania parametrów algorytmu.
+- **Eksploracja i eksploatacja**: Zastosowanie różnych operatorów genetycznych pozwoliło na równoważenie eksploracji i eksploatacji przestrzeni rozwiązań, co miało kluczowe znaczenie dla uzyskania dobrych wyników. Dobre zrównoważenie tych dwóch aspektów jest jednak bardzo trudne i wymaga odpowiedniego dostrajania parametrów algorytmu.
 
 - **Znaczenie parametrów**: Parametry algorytmu, takie jak prawdopodobieństwo mutacji czy liczba iteracji bez poprawy wyniku, miały istotny wpływ na jakość końcowego rozwiązania. Mechanizm dynamicznej zmiany parametrów był efektywnym sposobem na poprawę wydajności algorytmu. Wymagają one jednak odpowiedniego dostrajania w zależności od instancji problemu.
 
----
-
-- **Dywersyfikacja populacji**: Mechanizmy zapewniające różnorodność genotypów w populacji znacząco wpłynęły na poprawę wyników, zwłaszcza w końcowych stadiach optymalizacji, zapobiegając przedwczesnej zbieżności algorytmu.
+- **Dywersyfikacja populacji**: Mechanizmy zapewniające różnorodność genotypów w populacji znacząco wpłynęły na poprawę wyników, zwłaszcza w końcowych stadiach optymalizacji, zapobiegając przedwczesnej zbieżności algorytmu. W szczególności selekcja turniejowa okazała się skutecznym narzędziem do utrzymania różnorodności populacji.
 
 - **Znaczenie literatury**: Analiza literatury dostarczyła wielu inspiracji dotyczących różnych podejść do implementacji algorytmu genetycznego dla TSP. Wykorzystanie tych inspiracji pomogło w zaprojektowaniu solidnej architektury algorytmu. 
 
@@ -317,12 +314,24 @@ Tabela \ref{tab:results-full}: Porównanie wyników \label{tab:results-full}
   
 # Podsumowanie
 
-W ramach projektu zrealizowano implementację algorytmu genetycznego (AG) w celu rozwiązania problemu komiwojażera (TSP). Projekt obejmował kompleksowe podejście do problemu, w tym zaimplementowanie narzędzi do wczytywania danych, wielu operatorów genetycznych, mechanizmów sterowania parametrami oraz wizualizacji i zapisu wyników. Wyniki eksperymentów potwierdzają skuteczność zastosowanego algorytmu, szczególnie w przypadku mniejszych instancji problemu.
+W ramach projektu zrealizowano implementację algorytmu genetycznego (AG) w celu rozwiązania problemu komiwojażera (TSP). Projekt obejmował kompleksowe podejście do problemu, w tym zaimplementowanie narzędzi do wczytywania danych, wielu operatorów genetycznych, mechanizmów sterowania parametrami oraz wizualizacji i zapisu wyników. Wyniki eksperymentów potwierdzają skuteczność zastosowanego algorytmu.
 
-Dzięki implementacji różnorodnych operatorów genetycznych, takich jak selekcja `tournament`, krzyżowanie `PMX` i losowe mutacje, oraz mechanizmów poprawiających jakość poszukiwań (np. dywersyfikacja populacji, mechanizm zatrzymania algorytmu), udało się uzyskać dobre rozwiązania dla większości testowanych instancji TSP. Wprowadzenie dynamicznej zmiany parametrów algorytmu pozwoliło na lepsze dostosowanie poszukiwań w zależności od stadium optymalizacji.
+Dzięki implementacji różnorodnych operatorów genetycznych, takich jak selekcja `tournament`, krzyżowanie `PMX` i losowe mutacje, oraz mechanizmów poprawiających jakość poszukiwań (np. dywersyfikacja populacji, mechanizm zatrzymania algorytmu), udało się uzyskać satysfakcjonujące rozwiązania dla wszystkich testowanych problemów. Wprowadzenie dynamicznej zmiany parametrów algorytmu pozwoliło na lepsze dostosowanie poszukiwań w zależności od stadium optymalizacji.
 
-# Dziękujemy za uwagę
-
-# Bibliografia
+<!-- slides finish -->
 
 ---
+
+\begin{center}
+\usebeamerfont*{frametitle} \usebeamercolor[fg]{frametitle}  
+Dziękujemy za uwagę
+\end{center}
+ 
+---
+
+\begin{center}
+\usebeamerfont*{frametitle} \usebeamercolor[fg]{frametitle}  
+Pytania?
+\end{center}
+
+# Bibliografia {.allowframebreaks} 
